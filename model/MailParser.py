@@ -78,7 +78,7 @@ class MailParser:
         Returns:
             filepath -- filepath of the saved objects
         """
-        directory = "C:/Users/Public/scans"
+        directory = path.join(path.dirname(path.realpath(__file__)), "scans")
         fileName = ""
         # downloading attachments
 
