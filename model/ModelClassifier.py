@@ -31,9 +31,8 @@ class ModelClassifier:
         """ Main function to generate user input data which is then compared to existing data 
             from the training_data.csv file
 
-            Areas of improvement:
-                - 3D Models are not scaled to match the comparisons size
-                - Data is currently limited to a single cube and rectangle for comparisons
+            More data can be added to improve the number of classifications.
+            A real database should be implemented for more robust data storage.
         """
         self.data = preprocessing.scale(self.generate_distribution_data(self.mesh_object.vertices))
         self.results = self.compare_models(self.data)
