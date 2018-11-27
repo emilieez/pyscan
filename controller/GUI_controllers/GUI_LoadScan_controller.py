@@ -37,12 +37,8 @@ class LoadScan_controller:
         main_frame.current_frame.Data_listbox.insert(END, "Loading file: {}".format(classifier.filename))
         main_frame.current_frame.Data_listbox.insert(END, "Processing...")
         classifier.classify()
-        if classifier.results[0] is True and classifier.results[1] is True:
-            main_frame.current_frame.Data_listbox.insert(END, "It is a Cube :D")
-        else:
-            main_frame.current_frame.Data_listbox.insert(END, "It is not a cube :(")
-        classifier.show_histogram()
-
+        main_frame.current_frame.Data_listbox.insert(END, "{0} is a {1:.2f}% match!".format(classifier.results[0], classifier.results[1]))
+        classifier.show_histogram(classifier.existing_data, classifier.data)
 
 
     def Exit(self):

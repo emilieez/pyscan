@@ -18,33 +18,33 @@ class ModelClassifier:
         self.filename = model
         self.plyObject = tmesh.load(model)
         self.results = []
+        self.data = []
+        self.existing_data =[]
 
     def classify(self):
         #  TODO: Add model Scaling
         #  TODO: Add averages from multiple cube files for comparison
         #  TODO: Documentation
-        hist_data = self.generate_distribution_data(self.plyObject.vertices)
-        self.results = self.compare_models(hist_data)
+        self.data = self.generate_distribution_data(self.plyObject.vertices)
+        self.results = self.compare_models(self.data)
 
-    def compare_models(self, hist_data):
-        occurrences = list(hist_data[0])
-        distances = list(hist_data[1])
+    def compare_models(self, data):
+        file_data = self._get_shape_data()
+        self.existing_data = [float(i) for i in file_data[1:len(file_data)]]
+        classify_data, _ = np.histogram(self.existing_data, bins=40)
+        loaded_file_data, _ = np.histogram(data, bins=40)
 
-        shape_data = self._get_shape_data()
-        o_data = [float(i) for i in shape_data[1:41]]
-        d_data = [float(i) for i in shape_data[41:len(shape_data)]]
+        minima = np.minimum(classify_data, loaded_file_data)
+        intersection = np.true_divide(np.sum(minima), np.sum(loaded_file_data))
 
-        result1 = self.data_check(occurrences, o_data)
-        result2 = self.data_check(distances, d_data)
-
-        return result1, result2
+        return file_data[0], intersection * 100
 
     def generate_distribution_data(self, vertices):
         distribution_data = []
         for b in range(1024):
             for i in range(1024 ^ 2):
                 distribution_data.append(self._calc_length(vertices))
-        return plt.hist(distribution_data, histtype='step', bins=40)
+        return distribution_data
 
     def _calc_length(self, vertices):
         used_coordinate_pairs = []
@@ -65,10 +65,11 @@ class ModelClassifier:
 
         distance = self._get_euclidean_distance(first_rand_vertex, second_rand_vertex)
 
-        return distance
+        return distance * 100
 
     @staticmethod
-    def show_histogram():
+    def show_histogram(data1, data2):
+        plt.hist([data1, data2], histtype='step', bins=40)
         plt.title('Shape Distribution Graph')
         plt.ylabel('Frequency')
         plt.xlabel('Distance')
@@ -86,20 +87,8 @@ class ModelClassifier:
     def _get_shape_data():
         with open(os.path.join(os.path.dirname(__file__), "training_data.txt"), 'r') as data:
             lines = data.readlines()
-            return lines[0].split(",")
-
-    @staticmethod
-    def data_check(data1, data2):
-        checks_passed = 0
-        for index in range(len(data1)):
-            lower_bound = data2[index] - data2[index] * 0.20
-            upper_bound = data2[index] + data2[index] * 0.20
-            if upper_bound >= data1[index] >= lower_bound:
-                checks_passed += 1
-        if checks_passed >= len(data1)*0.75:
-            return True
-        else:
-            return False
+            split_lines = lines[0].split(",")
+            return split_lines
 
 
 if __name__ == "__main__":

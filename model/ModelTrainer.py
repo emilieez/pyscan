@@ -6,11 +6,10 @@ def main():
     test_model = ModelClassifier('C:/Users/Public/scans/Cube_Test02_BoxSize_Small(0).obj')
     hist_data = test_model.generate_distribution_data(test_model.plyObject.vertices)
     with open("training_data.txt", 'w') as training_data:
-        temp_list.append(['Cube', hist_data[0], hist_data[1]])
+        temp_list.append(['Cube', hist_data])
         for line in temp_list:
-            occ = list(line[1])
-            dist = list(line[2])
-            object_data = "{0},{1},{2}".format(line[0], ",".join(map(str, occ)), ",".join(map(str, dist)))
+            data = list(line[1])
+            object_data = "{0},{1}".format(line[0], ",".join(map(str, data)))
             training_data.write(object_data)
 
 
