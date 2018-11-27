@@ -64,9 +64,10 @@ class ModelClassifier:
             loaded_file_data, _ = np.histogram(data, bins=40)
 
             # Compare histograms
+            # Get the minimum data points between two Lists for each index
             minima = np.minimum(classify_data, loaded_file_data)
-            intersection = np.true_divide(
-                np.sum(minima), np.sum(loaded_file_data))
+            # Calculate the percentage of overlap between the two sets of data
+            intersection = np.true_divide(np.sum(minima), np.sum(loaded_file_data))
 
             if best_match == 0:
                 matching_shape = shape[0]
