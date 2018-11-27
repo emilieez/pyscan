@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import os
 import pandas as pd
 import zipfile
+from sklearn import preprocessing
 
 
 class ModelClassifier:
@@ -34,7 +35,7 @@ class ModelClassifier:
                 - 3D Models are not scaled to match the comparisons size
                 - Data is currently limited to a single cube and rectangle for comparisons
         """
-        self.data = self.generate_distribution_data(self.mesh_object.vertices)
+        self.data = preprocessing.scale(self.generate_distribution_data(self.mesh_object.vertices))
         self.results = self.compare_models(self.data)
 
     def compare_models(self, data):
@@ -56,7 +57,7 @@ class ModelClassifier:
         for shape in file_data:
 
             # Convert list entries to float from strings
-            compared_data = [float(i.strip()) for i in shape[1].split(',')]
+            compared_data = preprocessing.scale([float(i.strip()) for i in shape[1].split(',')])
 
             # Create histograms
             classify_data, _ = np.histogram(compared_data, bins=40)
@@ -74,7 +75,6 @@ class ModelClassifier:
             if intersection * 100 >= best_match:
                 matching_shape = shape[0]
                 best_match = intersection * 100
-                del self.existing_data[:]
                 self.existing_data = compared_data
 
         return matching_shape, best_match
@@ -156,14 +156,13 @@ class ModelClassifier:
         histograms
         
         Arguments:
-            data1 {List} -- contains list data of previous objects created from generate_distribution_data
-            data2 {List} -- contains list data of previous objects created from generate_distribution_data
+            data1 {List} -- Existing Data: contains list data of previous objects created from generate_distribution_data
+            data2 {List} -- New Input Data: contains list data of previous objects created from generate_distribution_data
             shape {String} -- Name of the object the input scan is being compared to
         """
 
-        plt.hist(data1, histtype='step', bins=40, color='green', label=shape)
-        plt.hist(data2, histtype='step', bins=40,
-                 color='red', label='Input Scan')
+        plt.hist(data1, histtype='step', bins=40, color='blue', label=shape)
+        plt.hist(data2, histtype='step', bins=40, color='red', label='Input Scan')
         plt.title('Shape Distribution Graph')
         plt.ylabel('Probability')
         plt.xlabel('Distance')
