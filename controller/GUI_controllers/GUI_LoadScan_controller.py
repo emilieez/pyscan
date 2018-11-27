@@ -28,17 +28,19 @@ class LoadScan_controller:
 
     def openFile(self):
         filename = askopenfilename(initialdir=path.join(path.dirname(path.realpath(".")), "pyscan/model/scans"), title="Select a file")
-        main_frame.current_frame.log_File_Path.set(filename)
+        fname = filename.split('/')
+        main_frame.current_frame.log_File_Path.set(fname[-1])
         classifier = ModelClassifier(filename)
         self.output_classifier(classifier)
 
     @staticmethod
     def output_classifier(classifier):
-        main_frame.current_frame.Data_listbox.insert(END, "Loading file: {}".format(classifier.filename))
+        fname = classifier.filename.split('/')
+        main_frame.current_frame.Data_listbox.insert(END, "Loading file: {}".format(fname[-1]))
         main_frame.current_frame.Data_listbox.insert(END, "Processing...")
         classifier.classify()
         main_frame.current_frame.Data_listbox.insert(END, "{0} is a {1:.2f}% match!".format(classifier.results[0], classifier.results[1]))
-        classifier.show_histogram(classifier.existing_data, classifier.data)
+        classifier.show_histogram(classifier.existing_data, classifier.data, classifier.results[0])
 
 
     def Exit(self):

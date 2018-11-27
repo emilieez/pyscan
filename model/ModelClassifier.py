@@ -10,10 +10,11 @@ class ModelClassifier:
     """
 
     def __init__(self, model):
-        """ Loads the .ply file for processing
+        """ Loads the model file for processing
+            Currently compatible with .obj and .ply files
         
         Arguments:
-            model {file path} -- file path of the .ply file
+            model {file path} -- file path of the model file
         """
         self.filename = model
         self.mesh_object = tmesh.load(model)
@@ -23,8 +24,6 @@ class ModelClassifier:
 
     def classify(self):
         #  TODO: Add model Scaling
-        #  TODO: Add averages from multiple cube files for comparison
-        #  TODO: Documentation
         self.data = self.generate_distribution_data(self.mesh_object.vertices)
         self.results = self.compare_models(self.data)
 
@@ -81,11 +80,23 @@ class ModelClassifier:
         return distance * 100
 
     @staticmethod
-    def show_histogram(data1, data2):
-        plt.hist([data1, data2], histtype='step', bins=40)
+    def _get_shape_data():
+        with open(os.path.join(os.path.dirname(__file__), "training_data.txt"), 'r') as data:
+            lines = data.readlines()
+            temp = []
+            for l in lines:
+                split_lines = l.split(",")
+                temp.append(split_lines)
+            return temp
+
+    @staticmethod
+    def show_histogram(data1, data2, shape):
+        plt.hist(data1, histtype='step', bins=40, color='green', label=shape)
+        plt.hist(data2, histtype='step', bins=40, color='red', label='Input Scan')
         plt.title('Shape Distribution Graph')
-        plt.ylabel('Frequency')
+        plt.ylabel('Probability')
         plt.xlabel('Distance')
+        plt.legend()
         plt.show()
 
     @staticmethod
@@ -95,16 +106,6 @@ class ModelClassifier:
     @staticmethod
     def _get_euclidean_distance(a, b):
         return np.linalg.norm(a - b)
-
-    @staticmethod
-    def _get_shape_data():
-        with open(os.path.join(os.path.dirname(__file__), "training_data.txt"), 'r') as data:
-            lines = data.readlines()
-            temp = []
-            for l in lines:
-                split_lines = l.split(",")
-                temp.append(split_lines)
-            return temp
 
 
 if __name__ == "__main__":
