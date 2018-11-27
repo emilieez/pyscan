@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import os
 import pandas as pd
 import zipfile
+import seaborn as sns
 from sklearn import preprocessing
 
 
@@ -160,8 +161,8 @@ class ModelClassifier:
             shape {String} -- Name of the object the input scan is being compared to
         """
 
-        plt.hist(data1, histtype='step', bins=40, color='blue', label=shape)
-        plt.hist(data2, histtype='step', bins=40, color='red', label='Input Scan')
+        sns.distplot(data1, bins=40, color='blue', label=shape)
+        sns.distplot(data2, bins=40, color='red', label='Input Scan')
         plt.title('Shape Distribution Graph')
         plt.ylabel('Probability')
         plt.xlabel('Distance')
