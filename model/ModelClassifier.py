@@ -108,26 +108,17 @@ class ModelClassifier:
         Returns:
             Float -- a distance between two points in 3 dimensional space
         """
-
-        used_coordinate_pairs = []
-        first_rand_vertex = choice(vertices)
-        second_rand_vertex = choice(vertices)
+        vertex_pair = [choice(vertices), choice(vertices)]
 
         while True:
-            if set(first_rand_vertex).intersection(second_rand_vertex) != 3:
-                if [first_rand_vertex, second_rand_vertex] not in used_coordinate_pairs:
-                    used_coordinate_pairs.append(
-                        [first_rand_vertex, second_rand_vertex])
-                    break
-                else:
-                    first_rand_vertex = choice(vertices)
-                    second_rand_vertex = choice(vertices)
+            # Reroll coordinates if they are the same
+            if set(vertex_pair[0]).intersection(vertex_pair[1]) == 3:
+                vertex_pair[0] = choice(vertices)
+                vertex_pair[1] = choice(vertices)
             else:
-                first_rand_vertex = choice(vertices)
-                second_rand_vertex = choice(vertices)
+                break
 
-        distance = self._get_euclidean_distance(
-            first_rand_vertex, second_rand_vertex)
+        distance = self._get_euclidean_distance(vertex_pair)
 
         return distance * 100
 
@@ -184,7 +175,7 @@ class ModelClassifier:
         return sum(lst) / len(lst)
 
     @staticmethod
-    def _get_euclidean_distance(a, b):
+    def _get_euclidean_distance(pair):
         """ Measures the distance between two points in 3D space
         
         Arguments:
@@ -195,7 +186,7 @@ class ModelClassifier:
             Float -- distance value calculated between two points
         """
 
-        return np.linalg.norm(a - b)
+        return np.linalg.norm(pair[0] - pair[1])
 
 
 if __name__ == "__main__":
