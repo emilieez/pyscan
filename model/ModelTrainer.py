@@ -3,13 +3,13 @@ from ModelClassifier import ModelClassifier
 
 def main():
     temp_list = []
-    test_model = ModelClassifier('C:/Users/Public/scans/Cube_Test02_BoxSize_Small(0).obj')
+    test_model = ModelClassifier('C:/Users/Public/scans/RectPrism_Test01_BestCase(0).obj')
     hist_data = test_model.generate_distribution_data(test_model.mesh_object.vertices)
-    with open("training_data.txt", 'w') as training_data:
-        temp_list.append(['Cube', hist_data])
+    with open("training_data.txt", 'a') as training_data:
+        temp_list.append(['Rectangular_Prism', hist_data])
         for line in temp_list:
             data = list(line[1])
-            object_data = "{0},{1}".format(line[0], ",".join(map(str, data)))
+            object_data = "{0},{1}\n".format(line[0], ",".join(map(str, data)))
             training_data.write(object_data)
 
 

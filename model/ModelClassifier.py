@@ -30,14 +30,27 @@ class ModelClassifier:
 
     def compare_models(self, data):
         file_data = self._get_shape_data()
-        self.existing_data = [float(i) for i in file_data[1:len(file_data)]]
-        classify_data, _ = np.histogram(self.existing_data, bins=40)
-        loaded_file_data, _ = np.histogram(data, bins=40)
+        best_match = 0
+        matching_shape = ''
+        for shape in file_data:
+            compared_data = [float(i.strip()) for i in shape[1:len(shape)]]
+            classify_data, _ = np.histogram(compared_data, bins=40)
+            loaded_file_data, _ = np.histogram(data, bins=40)
 
-        minima = np.minimum(classify_data, loaded_file_data)
-        intersection = np.true_divide(np.sum(minima), np.sum(loaded_file_data))
+            minima = np.minimum(classify_data, loaded_file_data)
+            intersection = np.true_divide(np.sum(minima), np.sum(loaded_file_data))
 
-        return file_data[0], intersection * 100
+            if best_match == 0:
+                matching_shape = shape[0]
+                best_match = intersection * 100
+
+            if intersection * 100 >= best_match:
+                matching_shape = shape[0]
+                best_match = intersection * 100
+                del self.existing_data[:]
+                self.existing_data = compared_data
+
+        return matching_shape, best_match
 
     def generate_distribution_data(self, vertices):
         distribution_data = []
@@ -87,8 +100,11 @@ class ModelClassifier:
     def _get_shape_data():
         with open(os.path.join(os.path.dirname(__file__), "training_data.txt"), 'r') as data:
             lines = data.readlines()
-            split_lines = lines[0].split(",")
-            return split_lines
+            temp = []
+            for l in lines:
+                split_lines = l.split(",")
+                temp.append(split_lines)
+            return temp
 
 
 if __name__ == "__main__":
