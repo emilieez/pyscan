@@ -45,9 +45,13 @@ The terminal should now look something like this:
 ```
 
 ### Deactivate the Virtual Environment
-To deactivate the virtual environment, simply type:
+To deactivate the virtual environment on Windows, simply type:
 ```
-deactivate
+PyScan\Scripts\deactivate.bat
+```
+or on Linux/MacOS:
+```
+Deactivate
 ```
 
 ### Installing Dependencies
