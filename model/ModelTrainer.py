@@ -4,7 +4,7 @@ from ModelClassifier import ModelClassifier
 def main():
     temp_list = []
     test_model = ModelClassifier('C:/Users/Public/scans/Cube_Test02_BoxSize_Small(0).obj')
-    hist_data = test_model.generate_distribution_data(test_model.plyObject.vertices)
+    hist_data = test_model.generate_distribution_data(test_model.mesh_object.vertices)
     with open("training_data.txt", 'w') as training_data:
         temp_list.append(['Cube', hist_data])
         for line in temp_list:

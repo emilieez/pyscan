@@ -16,7 +16,7 @@ class ModelClassifier:
             model {file path} -- file path of the .ply file
         """
         self.filename = model
-        self.plyObject = tmesh.load(model)
+        self.mesh_object = tmesh.load(model)
         self.results = []
         self.data = []
         self.existing_data =[]
@@ -25,7 +25,7 @@ class ModelClassifier:
         #  TODO: Add model Scaling
         #  TODO: Add averages from multiple cube files for comparison
         #  TODO: Documentation
-        self.data = self.generate_distribution_data(self.plyObject.vertices)
+        self.data = self.generate_distribution_data(self.mesh_object.vertices)
         self.results = self.compare_models(self.data)
 
     def compare_models(self, data):
