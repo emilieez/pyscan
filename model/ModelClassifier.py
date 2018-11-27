@@ -3,6 +3,8 @@ import trimesh as tmesh
 from random import choice
 import matplotlib.pyplot as plt
 import os
+import pandas as pd
+import zipfile
 
 
 class ModelClassifier:
@@ -22,11 +24,11 @@ class ModelClassifier:
         self.mesh_object = tmesh.load(model)
         self.results = []
         self.data = []
-        self.existing_data =[]
+        self.existing_data = []
 
     def classify(self):
         """ Main function to generate user input data which is then compared to existing data 
-            from the training_data.txt file
+            from the training_data.csv file
 
             Areas of improvement:
                 - 3D Models are not scaled to match the comparisons size
@@ -45,7 +47,7 @@ class ModelClassifier:
             Tuple -- a tuple containing the final results of the comparisons 
         """
 
-        # Loads data from training_data.txt file
+        # Loads data from training_data.csv file
         file_data = self._get_shape_data()
         best_match = 0
         matching_shape = ''
@@ -54,7 +56,7 @@ class ModelClassifier:
         for shape in file_data:
 
             # Convert list entries to float from strings
-            compared_data = [float(i.strip()) for i in shape[1:len(shape)]]
+            compared_data = [float(i.strip()) for i in shape[1].split(',')]
 
             # Create histograms
             classify_data, _ = np.histogram(compared_data, bins=40)
@@ -62,7 +64,8 @@ class ModelClassifier:
 
             # Compare histograms
             minima = np.minimum(classify_data, loaded_file_data)
-            intersection = np.true_divide(np.sum(minima), np.sum(loaded_file_data))
+            intersection = np.true_divide(
+                np.sum(minima), np.sum(loaded_file_data))
 
             if best_match == 0:
                 matching_shape = shape[0]
@@ -85,7 +88,7 @@ class ModelClassifier:
         Returns:
             List -- a list containing distances measured between any two random vertices
         """
-        
+
         distribution_data = []
         for b in range(1024):
             for i in range(1024 ^ 2):
@@ -105,7 +108,6 @@ class ModelClassifier:
             Float -- a distance between two points in 3 dimensional space
         """
 
-        
         used_coordinate_pairs = []
         first_rand_vertex = choice(vertices)
         second_rand_vertex = choice(vertices)
@@ -113,7 +115,8 @@ class ModelClassifier:
         while True:
             if set(first_rand_vertex).intersection(second_rand_vertex) != 3:
                 if [first_rand_vertex, second_rand_vertex] not in used_coordinate_pairs:
-                    used_coordinate_pairs.append([first_rand_vertex, second_rand_vertex])
+                    used_coordinate_pairs.append(
+                        [first_rand_vertex, second_rand_vertex])
                     break
                 else:
                     first_rand_vertex = choice(vertices)
@@ -122,7 +125,8 @@ class ModelClassifier:
                 first_rand_vertex = choice(vertices)
                 second_rand_vertex = choice(vertices)
 
-        distance = self._get_euclidean_distance(first_rand_vertex, second_rand_vertex)
+        distance = self._get_euclidean_distance(
+            first_rand_vertex, second_rand_vertex)
 
         return distance * 100
 
@@ -133,14 +137,18 @@ class ModelClassifier:
         Returns:
             List -- contains list data of previous objects created from generate_distribution_data
         """
-
-        with open(os.path.join(os.path.dirname(__file__), "training_data.txt"), 'r') as data:
-            lines = data.readlines()
-            temp = []
-            for l in lines:
-                split_lines = l.split(",")
-                temp.append(split_lines)
-            return temp
+        try:
+            with open(os.path.join(os.path.dirname(__file__), "training_data.csv"), 'r') as data:
+                file_data = pd.read_csv(data, header=None)
+                return list(file_data.values)
+        except FileNotFoundError:
+            zip_ref = zipfile.ZipFile(os.path.join(
+                os.path.dirname(__file__), "training_data.zip"), "r")
+            zip_ref.extractall(os.path.dirname(__file__))
+            zip_ref.close()
+            with open(os.path.join(os.path.dirname(__file__), "training_data.csv"), 'r') as data:
+                file_data = pd.read_csv(data, header=None)
+                return list(file_data.values)
 
     @staticmethod
     def show_histogram(data1, data2, shape):
@@ -154,7 +162,8 @@ class ModelClassifier:
         """
 
         plt.hist(data1, histtype='step', bins=40, color='green', label=shape)
-        plt.hist(data2, histtype='step', bins=40, color='red', label='Input Scan')
+        plt.hist(data2, histtype='step', bins=40,
+                 color='red', label='Input Scan')
         plt.title('Shape Distribution Graph')
         plt.ylabel('Probability')
         plt.xlabel('Distance')
@@ -190,5 +199,6 @@ class ModelClassifier:
 
 
 if __name__ == "__main__":
-    mesh = ModelClassifier('./scans/test_scans/Cube_Test01_BoxSize_Small(0).obj')
+    mesh = ModelClassifier(
+        './scans/test_scans/Cube_Test01_BoxSize_Small(0).obj')
     mesh.classify()

@@ -1,26 +1,41 @@
 from ModelClassifier import ModelClassifier
+import pandas as pd
+import csv
+import os
 
 
-def main():
+def train(open_type, file_location):
+    """
+    Download files to the scans folder before running. This will allow for more objects to be classified
+    and for more precise comparisons
+
+    Disclaimer: This function will take a long time to run!
+    :return:
+    """
     temp_list = []
-    test_model = ModelClassifier('C:/Users/Public/scans/RectPrism_Test01_BestCase(0).obj')
-    hist_data = test_model.generate_distribution_data(test_model.mesh_object.vertices)
-    with open("training_data.txt", 'a') as training_data:
-        temp_list.append(['Rectangular_Prism', hist_data])
+    training_files = os.listdir(file_location)
+    for file in training_files:
+        test_model = ModelClassifier(os.path.join(os.path.join(os.path.dirname(__file__), "scans"), file))
+        hist_data = test_model.generate_distribution_data(test_model.mesh_object.vertices)
+        shape_name = file.split("_")
+        temp_list.append([shape_name[0], ','.join(map(str, hist_data))])
+    with open("training_data.csv", open_type) as training_data:
+        writer = csv.writer(training_data)
         for line in temp_list:
-            data = list(line[1])
-            object_data = "{0},{1}\n".format(line[0], ",".join(map(str, data)))
-            training_data.write(object_data)
+            writer.writerow(line)
 
 
 def read_from_file():
-    with open("training_data.txt", 'r') as data:
-        lines = data.readlines()
-        cube_data = lines[0].split(",")
-        test = [float(i) for i in cube_data[1:41]]
-        test2 = [float(i) for i in cube_data[41:len(cube_data)]]
-        print(test2)
-
+    """
+    This is just a test function to determine how the file data will be manipulated or
+    if the data was stored correctly
+    :return:
+    """
+    with open("training_data.csv", 'r') as data:
+        file_data = pd.read_csv(data, header=None)
+        for i in list(file_data.values):
+            print(len(i[1].split(',')))
 
 if __name__ == '__main__':
-    main()
+    train('w', './scans')
+    #read_from_file()

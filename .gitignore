@@ -4,3 +4,4 @@
 /model/scans
 /model/credentials.py
 /model/test.py
+/model/training_data.csv
