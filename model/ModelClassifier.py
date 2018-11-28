@@ -135,7 +135,7 @@ class ModelClassifier:
                 return list(file_data.values)
         except FileNotFoundError:
             zip_ref = zipfile.ZipFile(os.path.join(
-                os.path.dirname(__file__), "training_data.zip"), "r")
+                os.path.dirname(__file__), "object_data.zip"), "r")
             zip_ref.extractall(os.path.dirname(__file__))
             zip_ref.close()
             with open(os.path.join(os.path.dirname(__file__), "object_data.csv"), 'r') as data:
