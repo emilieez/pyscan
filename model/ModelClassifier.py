@@ -30,7 +30,7 @@ class ModelClassifier:
 
     def classify(self):
         """ Main function to generate user input data which is then compared to existing data 
-            from the training_data.csv file
+            from the object_data.csv file
 
             More data can be added to improve the number of classifications.
             A real database should be implemented for more robust data storage.
@@ -48,7 +48,7 @@ class ModelClassifier:
             Tuple -- a tuple containing the final results of the comparisons 
         """
 
-        # Loads data from training_data.csv file
+        # Loads data from object_data.csv file
         file_data = self._get_shape_data()
         best_match = 0
         matching_shape = ''
@@ -130,7 +130,7 @@ class ModelClassifier:
             List -- contains list data of previous objects created from generate_distribution_data
         """
         try:
-            with open(os.path.join(os.path.dirname(__file__), "training_data.csv"), 'r') as data:
+            with open(os.path.join(os.path.dirname(__file__), "object_data.csv"), 'r') as data:
                 file_data = pd.read_csv(data, header=None)
                 return list(file_data.values)
         except FileNotFoundError:
@@ -138,7 +138,7 @@ class ModelClassifier:
                 os.path.dirname(__file__), "training_data.zip"), "r")
             zip_ref.extractall(os.path.dirname(__file__))
             zip_ref.close()
-            with open(os.path.join(os.path.dirname(__file__), "training_data.csv"), 'r') as data:
+            with open(os.path.join(os.path.dirname(__file__), "object_data.csv"), 'r') as data:
                 file_data = pd.read_csv(data, header=None)
                 return list(file_data.values)
 

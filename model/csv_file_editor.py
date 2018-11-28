@@ -1,6 +1,7 @@
 from .ModelClassifier import ModelClassifier
 import os
 import pandas as pd
+import csv
 
 
 def write_to_file(open_type, file_location):
@@ -18,7 +19,7 @@ def write_to_file(open_type, file_location):
         hist_data = test_model.generate_distribution_data(test_model.mesh_object.vertices)
         shape_name = file.split("_")
         temp_list.append([shape_name[0], ','.join(map(str, hist_data))])
-    with open("training_data.csv", open_type) as training_data:
+    with open("object_data.csv", open_type) as training_data:
         writer = csv.writer(training_data)
         for line in temp_list:
             writer.writerow(line)
@@ -30,7 +31,7 @@ def read_from_file():
     if the data was stored correctly
     :return:
     """
-    with open("training_data.csv", 'r') as data:
+    with open("object_data.csv", 'r') as data:
         file_data = pd.read_csv(data, header=None)
         for i in list(file_data.values):
             print(len(i[1].split(',')))
