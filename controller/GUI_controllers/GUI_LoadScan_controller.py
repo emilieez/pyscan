@@ -20,10 +20,12 @@ class LoadScan_controller:
     def __init__(self, master):
         self.master = master
         self.img = './view/BCIT_Logo.png'
+        self.mesh = ''
 
 
         main_frame.current_frame = LoadScan_UI(self.master, self.img)
         main_frame.current_frame.Open_but.config(command=lambda: self.openFile())
+        main_frame.current_frame.show_but.config(command=lambda: self.show_mesh())
         main_frame.current_frame.can_but.config(command=lambda: self.Exit())
 
     def openFile(self):
@@ -31,6 +33,7 @@ class LoadScan_controller:
         fname = filename.split('/')
         main_frame.current_frame.log_File_Path.set(fname[-1])
         classifier = ModelClassifier(filename)
+        self.mesh = classifier.mesh_object
         self.output_classifier(classifier)
 
     @staticmethod
@@ -42,6 +45,8 @@ class LoadScan_controller:
         main_frame.current_frame.Data_listbox.insert(END, "{0} is a {1:.2f}% match!".format(classifier.results[0], classifier.results[1]))
         classifier.show_histogram(classifier.existing_data, classifier.data, classifier.results[0])
 
+    def show_mesh(self):
+        self.mesh.show()
 
     def Exit(self):
         from .GUI_LoadGet_controller import LoadGet_controller

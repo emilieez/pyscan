@@ -65,6 +65,9 @@ class LoadScan_UI(UI):
         self.can_but = Button(self.botbut_frame, text='Back', width=10)
         self.can_but.grid(row=1, column=0, padx=30, pady=15)
 
+        self.show_but = Button(self.botbut_frame, text='Show Model', width=12)
+        self.show_but.grid(row=1, column=2, padx=30, pady=15)
+
 
 if __name__ == "__main__":
     root = Tk()
