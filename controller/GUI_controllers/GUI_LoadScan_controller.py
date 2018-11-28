@@ -20,11 +20,12 @@ class LoadScan_controller:
     def __init__(self, master):
         self.master = master
         self.img = './view/BCIT_Logo.png'
-        self.mesh = ''
+        self.classifier = ''
 
 
         main_frame.current_frame = LoadScan_UI(self.master, self.img)
         main_frame.current_frame.Open_but.config(command=lambda: self.openFile())
+        main_frame.current_frame.classify_but.config(command=lambda: self.output_classifier())
         main_frame.current_frame.show_but.config(command=lambda: self.show_mesh())
         main_frame.current_frame.can_but.config(command=lambda: self.Exit())
 
@@ -32,21 +33,18 @@ class LoadScan_controller:
         filename = askopenfilename(initialdir=path.join(path.dirname(path.realpath(".")), "pyscan/model/scans"), title="Select a file")
         fname = filename.split('/')
         main_frame.current_frame.log_File_Path.set(fname[-1])
-        classifier = ModelClassifier(filename)
-        self.mesh = classifier.mesh_object
-        self.output_classifier(classifier)
-
-    @staticmethod
-    def output_classifier(classifier):
-        fname = classifier.filename.split('/')
         main_frame.current_frame.Data_listbox.insert(END, "Loading file: {}".format(fname[-1]))
+        self.classifier = ModelClassifier(filename)
+
+    def output_classifier(self):
+        fname = self.classifier.filename.split('/')
         main_frame.current_frame.Data_listbox.insert(END, "Processing...")
-        classifier.classify()
-        main_frame.current_frame.Data_listbox.insert(END, "{0} is a {1:.2f}% match!".format(classifier.results[0], classifier.results[1]))
-        classifier.show_histogram(classifier.existing_data, classifier.data, classifier.results[0])
+        self.classifier.classify()
+        main_frame.current_frame.Data_listbox.insert(END, "{0} is a {1:.2f}% match!".format(self.classifier.results[0], self.classifier.results[1]))
+        self.classifier.show_histogram(self.classifier.existing_data, self.classifier.data, self.classifier.results[0])
 
     def show_mesh(self):
-        self.mesh.show()
+        self.classifier.mesh_object.show()
 
     def Exit(self):
         from .GUI_LoadGet_controller import LoadGet_controller
