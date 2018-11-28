@@ -2,6 +2,8 @@
 .vscode
 /model/out.txt
 /model/scans
+/model/training
+/model/trained_data.pkl
 /model/credentials.py
 /model/test.py
 /model/training_data.csv
