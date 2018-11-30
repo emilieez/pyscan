@@ -9,6 +9,8 @@ Python is required to be able to run this program.
 3. [Installation](#Installation)
 4. [Run the PyScan virtual environment](#Run-the-PyScan-virtual-environment)
 5. [Running the PyScan3D Application](#Running-the-PyScan3D-Application)
+6. [Troubleshooting](#Troubleshooting)
+
 
 
 ## Features:
@@ -87,5 +89,6 @@ In the root folder of the repository type:
 python pyscan.py
 ```
 
+## Troubleshooting
 
 
