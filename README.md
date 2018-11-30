@@ -2,9 +2,30 @@
 Uses data gathered from the Structure Sensor by Occipital to classify things into their respective shapes. 
 Python is required to be able to run this program.
 
+
+## Table of Contents
+1. [Features](#Features)
+2. [Known Application Bugs](#Known-Application-Bugs)
+3. [Installation](#Installation)
+4. [Run the PyScan virtual environment](#Run-the-PyScan-virtual-environment)
+5. [Running the PyScan3D Application](#Running-the-PyScan3D-Application)
+
+
 ## Features:
 **Mail Parser** - Log in to your email to select and download scans <br>
 **Object Classifier** - Load a .obj or .ply file to classify its shape
+
+
+## Known Application Bugs
+-Histogram is not asynchronous
+-Mail parser does not show the correct errors
+-If show model window is open, GUI will not update until the show model window is closed
+-If show model window is open,  application will not classify properly
+-When the classify button is repeatedly pressed multiple times, the application will become not responding
+-When classifying is processing and user clicks any button before processing is complete will cause the program to not function properly
+-Prone to crash when histogram and show model window are open at the same time
+-When logged into mail parser, if you leave screen or close application an error will show
+
 
 ## Installation:
 Clone the repository using HTTPS:
@@ -65,3 +86,6 @@ In the root folder of the repository type:
 ```
 python pyscan.py
 ```
+
+
+

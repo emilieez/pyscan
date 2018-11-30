@@ -36,15 +36,15 @@ class LoadScan_controller:
         """
 
         filename = askopenfilename(initialdir=path.join(path.dirname(path.realpath(".")), "pyscan/model/scans"), title="Select a file")
-        if filename != "":
+        if filename.split('.')[-1] == "ply" or filename.split('.')[-1] == 'obj':
             fname = filename.split('/')
             main_frame.current_frame.log_File_Path.set(fname[-1])
             main_frame.current_frame.Data_listbox.insert(END, "Loaded file: {}".format(fname[-1]))
             self.classifier = ModelClassifier(filename)
             main_frame.current_frame.hist_but.config(state=DISABLED)
             main_frame.current_frame.show_but.config(state=NORMAL)
-
-
+        else:
+            messagebox.showinfo("Error", "Please select a ply or obj file")
 
     def output_classifier(self):
         """
