@@ -51,7 +51,7 @@ PyScan\Scripts\deactivate.bat
 ```
 or on Linux/MacOS:
 ```
-Deactivate
+deactivate
 ```
 
 ### Installing Dependencies
