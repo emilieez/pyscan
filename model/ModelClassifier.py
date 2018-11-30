@@ -27,6 +27,7 @@ class ModelClassifier:
         self.results = []
         self.data = []
         self.existing_data = []
+        self.matching_shape = ''
 
     def classify(self):
         """ Main function to generate user input data which is then compared to existing data 
@@ -50,8 +51,7 @@ class ModelClassifier:
 
         # Loads data from object_data.csv file
         file_data = self._get_shape_data()
-        best_match = 0
-        matching_shape = ''
+        match_data = [[], []]
 
         # Loop through file_data to find the best matching shape for the input scan
         for shape in file_data:
@@ -69,16 +69,17 @@ class ModelClassifier:
             # Calculate the percentage of overlap between the two sets of data
             intersection = np.true_divide(np.sum(minima), np.sum(loaded_file_data))
 
-            if best_match == 0:
-                matching_shape = shape[0]
-                best_match = intersection * 100
+            if shape[0] not in match_data[0]:
+                match_data[0].append(shape[0])
+                match_data[1].append(intersection * 100)
+            elif intersection * 100 >= match_data[1][match_data[0].index(shape[0])]:
+                match_data[1][match_data[0].index(shape[0])] = intersection * 100
 
-            if intersection * 100 >= best_match:
-                matching_shape = shape[0]
-                best_match = intersection * 100
+            if intersection * 100 >= max(match_data[1]):
+                self.matching_shape = shape[0]
                 self.existing_data = compared_data
 
-        return matching_shape, best_match
+        return match_data
 
     def generate_distribution_data(self, vertices):
         """ Generate enough data for precise model comparisons

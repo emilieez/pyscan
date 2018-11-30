@@ -4,6 +4,8 @@ from view import LoadScan_UI
 from view import main_frame
 from model import ModelClassifier
 from os import path
+from _thread import start_new_thread
+from tkinter import messagebox
 
 
 class LoadScan_controller:
@@ -25,8 +27,9 @@ class LoadScan_controller:
 
         main_frame.current_frame = LoadScan_UI(self.master, self.img)
         main_frame.current_frame.Open_but.config(command=lambda: self.openFile())
-        main_frame.current_frame.classify_but.config(command=lambda: self.output_classifier())
+        main_frame.current_frame.classify_but.config(command=lambda: start_new_thread(self.output_classifier,()))
         main_frame.current_frame.show_but.config(command=lambda: self.show_mesh())
+        main_frame.current_frame.hist_but.config(command=lambda: self.show_histogram())
         main_frame.current_frame.can_but.config(command=lambda: self.Exit())
 
     def openFile(self):
@@ -37,11 +40,20 @@ class LoadScan_controller:
         self.classifier = ModelClassifier(filename)
 
     def output_classifier(self):
-        fname = self.classifier.filename.split('/')
+        main_frame.current_frame.Data_listbox.insert(END, "Do show histogram...")
         main_frame.current_frame.Data_listbox.insert(END, "Processing...")
         self.classifier.classify()
-        main_frame.current_frame.Data_listbox.insert(END, "{0} is a {1:.2f}% match!".format(self.classifier.results[0], self.classifier.results[1]))
-        self.classifier.show_histogram(self.classifier.existing_data, self.classifier.data, self.classifier.results[0])
+        main_frame.current_frame.Data_listbox.insert(END, "Match Results:")
+        for idx in range(len(self.classifier.results[0])):
+            main_frame.current_frame.Data_listbox.insert(
+                END, "{0}: {1:.2f}%".format(
+                    self.classifier.results[0][idx], self.classifier.results[1][idx]))
+        main_frame.current_frame.Data_listbox.insert(END, "It is a {}!".format(self.classifier.matching_shape))
+        messagebox.showinfo("Success", "It is a {}!".format(self.classifier.matching_shape))
+
+    def show_histogram(self):
+        self.classifier.show_histogram(self.classifier.existing_data, self.classifier.data, self.classifier.matching_shape)
+
 
     def show_mesh(self):
         self.classifier.mesh_object.show()
