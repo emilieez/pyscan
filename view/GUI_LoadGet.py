@@ -5,8 +5,7 @@ from .GUI_baseUI import UI
 class LoadGet_UI(UI):
 
     """
-        The chequing or savigns page
-        Has 2 buttons cheq or savigns
+        The UI page to choose from get scan from email or load scan into classifier
     """
 
     def __init__(self, master, img):

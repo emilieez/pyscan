@@ -10,11 +10,12 @@ from .GUI_LoadScan_controller import LoadScan_controller
 class LoadGet_controller:
 
     """
-        The Chequing or savings GUI controller.
-        It creates the Chequing or savings UI
-        Contains functions that the UI's buttons will use.
+        The first UI's controller.
+        Contains the functions for the LoadGetUI.py buttons
 
-        decides which account is subjected to the option of withdraw or deposit
+        decides which option is selected:
+            Fetch: fetches scans from email
+            Load: loads a scan for classifications
     """
 
 
@@ -31,13 +32,30 @@ class LoadGet_controller:
         # main_frame.current_frame.load_but.config(command=lambda: self.To_withdraw_save(self.option))
         main_frame.current_frame.can_but.config(command=lambda: self.Exit())
 
+
+
     def openEmail(self):
+        """
+            Changes the main controller into login_controller.
+            For logging into email to fetch scans
+        """
         login_controller(self.master)
 
+
+
     def openLoad(self):
+        """
+            Changes the main controller into LoadScan_controller.
+            For model classification
+        """
         LoadScan_controller(self.master)
 
+
+
     def Exit(self):
+        """
+            closes the UI
+        """
         self.master.master.destroy()
 
 if __name__ == "__main__":

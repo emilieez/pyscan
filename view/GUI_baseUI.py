@@ -5,8 +5,7 @@ class UI():
 
     """
         The base UI where other UI inherits from.
-        has an outline with 4 rows, the middle one having weight to it
-        Top row has the title "BANK OF D.H.E" and the underline to seperate the title block
+        Top row has the title and the underline to seperate the title block
     """
 
     def __init__(self, master, img):
