@@ -35,7 +35,7 @@ class LoadScan_controller:
             Opens file explorer for user to input the desired scan for classification
         """
 
-        filename = askopenfilename(initialdir=path.join(path.dirname(path.realpath(".")), "pyscan/model/scans"), title="Select a file")
+        filename = askopenfilename(initialdir=path.join(path.dirname(path.realpath(__file__)), "scans"), title="Select a file")
         if filename.split('.')[-1] == "ply" or filename.split('.')[-1] == 'obj':
             fname = filename.split('/')
             main_frame.current_frame.log_File_Path.set(fname[-1])
