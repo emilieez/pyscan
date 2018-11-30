@@ -34,28 +34,44 @@ class LoadScan_controller:
         """
             Opens file explorer for user to input the desired scan for classification
         """
+
         filename = askopenfilename(initialdir=path.join(path.dirname(path.realpath(".")), "pyscan/model/scans"), title="Select a file")
-        fname = filename.split('/')
-        main_frame.current_frame.log_File_Path.set(fname[-1])
-        main_frame.current_frame.Data_listbox.insert(END, "Loading file: {}".format(fname[-1]))
-        self.classifier = ModelClassifier(filename)
+        if filename != "":
+            fname = filename.split('/')
+            main_frame.current_frame.log_File_Path.set(fname[-1])
+            main_frame.current_frame.Data_listbox.insert(END, "Loaded file: {}".format(fname[-1]))
+            self.classifier = ModelClassifier(filename)
+            main_frame.current_frame.hist_but.config(state=DISABLED)
+            main_frame.current_frame.show_but.config(state=NORMAL)
+
+
 
     def output_classifier(self):
         """
             Calls the classifier to process the input model
         """
-        main_frame.current_frame.Data_listbox.insert(END, "Do show histogram...")
-        main_frame.current_frame.Data_listbox.insert(END, "Processing...")
-        self.classifier.classify()
-        main_frame.current_frame.Data_listbox.insert(END, "Match Results:")
-        for idx in range(len(self.classifier.results[0])):
-            main_frame.current_frame.Data_listbox.insert(
-                END, "{0}: {1:.2f}%".format(
-                    self.classifier.results[0][idx], self.classifier.results[1][idx]))
-        main_frame.current_frame.Data_listbox.insert(END, "It is a {}!".format(self.classifier.matching_shape))
-        messagebox.showinfo("Success", "It is a {}!".format(self.classifier.matching_shape))
+        try:
+            if self.classifier.mesh_object != "":
+                main_frame.current_frame.Data_listbox.insert(END, "Processing...")
+                self.classifier.classify()
+
+                for idx in range(len(self.classifier.results[0])):
+                    main_frame.current_frame.Data_listbox.insert(
+                        END, "{0}: {1:.2f}%".format(
+                            self.classifier.results[0][idx], self.classifier.results[1][idx]))
+                main_frame.current_frame.Data_listbox.insert(END, "Match Results:")
+                main_frame.current_frame.Data_listbox.insert(END, "It is a {}!".format(self.classifier.matching_shape))
+                messagebox.showinfo("Success", "It is a {}!".format(self.classifier.matching_shape))
+                main_frame.current_frame.hist_but.config(state = NORMAL)
+
+        except:
+            messagebox.showinfo("Error", "Please load a scan")
 
     def show_histogram(self):
+        """
+            Asynch does not work here for some reason
+        """
+        main_frame.current_frame.Data_listbox.insert(END, "Generating Histogram...")
         self.classifier.show_histogram(self.classifier.existing_data, self.classifier.data, self.classifier.matching_shape)
 
 

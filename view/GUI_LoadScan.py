@@ -59,19 +59,22 @@ class LoadScan_UI(UI):
         self.botbut_frame.grid_rowconfigure(0, weight=1)
         self.botbut_frame.grid_rowconfigure(2, weight=1)
 
+        self.botbut_frame.grid_columnconfigure(0, weight=1)
         self.botbut_frame.grid_columnconfigure(1, weight=1)
+        self.botbut_frame.grid_columnconfigure(2, weight=1)
+        self.botbut_frame.grid_columnconfigure(3, weight=1)
 
         self.can_but = Button(self.botbut_frame, text='Back', width=10)
-        self.can_but.grid(row=1, column=0, padx=30, pady=15)
+        self.can_but.grid(row=1, column=0, pady=15)
 
-        self.show_but = Button(self.botbut_frame, text='Show Model', width=12)
-        self.show_but.grid(row=1, column=1, padx=30, pady=15)
+        self.show_but = Button(self.botbut_frame, state=DISABLED, text='Show Model', width=12)
+        self.show_but.grid(row=1, column=1, pady=15)
 
-        self.hist_but = Button(self.botbut_frame, text='Show Histogram', width=15)
-        self.hist_but.grid(row=0, column=1, padx=30, pady=15)
+        self.hist_but = Button(self.botbut_frame, state=DISABLED, text='Show Histogram', width=15)
+        self.hist_but.grid(row=1, column=2, pady=15)
 
         self.classify_but = Button(self.botbut_frame, text='Classify', width=10)
-        self.classify_but.grid(row=1, column=2, padx=30, pady=15)
+        self.classify_but.grid(row=1, column=3, pady=15)
 
 
 if __name__ == "__main__":
