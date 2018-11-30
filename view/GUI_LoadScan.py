@@ -5,8 +5,7 @@ from .GUI_baseUI import UI
 class LoadScan_UI(UI):
 
     """
-        The chequing or savigns page
-        Has 2 buttons cheq or savigns
+        The UI for load scan into classifier
     """
 
     def __init__(self, master, img):

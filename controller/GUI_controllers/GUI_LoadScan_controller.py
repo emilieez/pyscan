@@ -11,11 +11,9 @@ from tkinter import messagebox
 class LoadScan_controller:
 
     """
-        The Chequing or savings GUI controller.
-        It creates the Chequing or savings UI
-        Contains functions that the UI's buttons will use.
-
-        decides which account is subjected to the option of withdraw or deposit
+        Sets the Main controller to LoadScan
+        contains functionalities for LoadScan.py
+        Connects to the ModelClassifier.py
     """
 
 
@@ -33,6 +31,9 @@ class LoadScan_controller:
         main_frame.current_frame.can_but.config(command=lambda: self.Exit())
 
     def openFile(self):
+        """
+            Opens file explorer for user to input the desired scan for classification
+        """
         filename = askopenfilename(initialdir=path.join(path.dirname(path.realpath(".")), "pyscan/model/scans"), title="Select a file")
         fname = filename.split('/')
         main_frame.current_frame.log_File_Path.set(fname[-1])
@@ -40,6 +41,9 @@ class LoadScan_controller:
         self.classifier = ModelClassifier(filename)
 
     def output_classifier(self):
+        """
+            Calls the classifier to process the input model
+        """
         main_frame.current_frame.Data_listbox.insert(END, "Do show histogram...")
         main_frame.current_frame.Data_listbox.insert(END, "Processing...")
         self.classifier.classify()
@@ -56,9 +60,15 @@ class LoadScan_controller:
 
 
     def show_mesh(self):
+        """
+            Displays the model
+        """
         self.classifier.mesh_object.show()
 
     def Exit(self):
+        """
+            Goes back to the LoadGet UI
+        """
         from .GUI_LoadGet_controller import LoadGet_controller
         LoadGet_controller(self.master)
 

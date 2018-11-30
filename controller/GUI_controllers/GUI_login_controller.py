@@ -1,5 +1,7 @@
 
 from tkinter import *
+import os
+import sys
 
 from tkinter import messagebox
 
@@ -17,10 +19,8 @@ class login_controller:
 
     """
         The login GUI controller.
-        It creates the login UI
-        Contains functions that the UI's buttons will use.
-
-        gets the login info
+        Contains functionalities for the login UI
+        Connects to the MailParser.py
     """
 
     def __init__(self, master):
@@ -36,6 +36,12 @@ class login_controller:
         # main_frame.current_frame.radio_but_all.config(command=lambda: main_frame.current_frame.var.set(1))
 
     def _login(self):
+        """
+            Gets the input for mail login and logs in
+            Displays error based on returned mail parser functions
+
+            Inserts fetched models from email into the listbox
+        """
         user_email = str(main_frame.current_frame.account_entry.get())
         user_pass = str(main_frame.current_frame.pin_entry.get())
         # scan_type = str(main_frame.current_frame.var.get())
@@ -67,17 +73,27 @@ class login_controller:
 
 
     def exit(self):
+        """
+            goes back to LoadGet UI
+            Logs out of email if connected
+        """
         from .GUI_LoadGet_controller import LoadGet_controller
         LoadGet_controller(self.master)
         self.mail.logout(self.mail_box)
 
     def select_models(self):
+        """
+            Stores a list of selected models in the list box.
+            The Get Scans button will fetch all scans selected/saved in the list
+            Message will show the root directory of pyscan file as well as /model/scans
+                this is where the files are saved to
+        """
         selected_models =[]
         val = main_frame.current_frame.model_list.curselection()
         for i, v in enumerate(val):
             selected_models.append(main_frame.current_frame.model_list.get(val[i]))
         self.mail.downloadAttachments(self.mail_message, selected_models)
-        messagebox.showinfo("Success", 'Scans are saved in C://Users//Pulbic//scans folder')
+        messagebox.showinfo("Success", 'Scans are saved in ' + os.path.dirname(sys.modules['__main__'].__file__) + "/model/scans")
         self.mail.logout(self.mail_box)
 
 

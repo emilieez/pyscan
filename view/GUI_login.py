@@ -5,10 +5,7 @@ from .GUI_baseUI import UI
 class login_UI(UI):
 
     """
-        The login page
-        has 2 entry fields for account # and pin
-        pin is restricted to 4 characters by StringVar, trace and textvariable
-        that allows it to be checked by limitEntry Size with every key press
+        Login to Email UI
     """
 
 
