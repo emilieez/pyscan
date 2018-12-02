@@ -19,15 +19,14 @@ Python is required to be able to run this program.
 
 
 ## Known Application Bugs
--Histogram is not asynchronous
--Mail parser does not show the correct errors
--If show model window is open, GUI will not update until the show model window is closed
--If show model window is open,  application will not classify properly
--When the classify button is repeatedly pressed multiple times, the application will become not responding
--When classifying is processing and user clicks any button before processing is complete will cause the program to not function properly
--Prone to crash when histogram and show model window are open at the same time
--When logged into mail parser, if you leave screen or close application an error will show
-
+- Histogram is slow to load due to tkinter limitations
+- Mail parser does not show the correct errors
+- If show model window is open, the main GUI window will not update until the show model window is closed
+- If show model window is open,  application will not classify properly
+- When the classify button is repeatedly pressed multiple times, the application will become not responding
+- When classifying is processing and user clicks any button before processing is complete will cause the program to not function properly
+- Prone to crash when histogram and show model window are open at the same time
+- When logged into mail parser, if you leave screen or close application an error will show
 
 ## Installation:
 Clone the repository using HTTPS:
@@ -41,19 +40,27 @@ Clone the repository using SSH:
 git clone git@github.com:emilieez/pyscan.git
 ```
 
+### Installing Dependencies
+A [virtual environment](#Run-the-PyScan-virtual-environment) is provided if the dependencies are not installed.
+However, all dependencies can be installed using this command in the root folder of the repository:
+```
+pip install -r requirements.txt
+```
+
 ## Run the PyScan virtual environment
 A virtual environment is provided if the dependencies are not installed.
 ### Windows:
 
 Run the following line in Command Prompt:
 ```
-PyScan\Scripts\activate.bat
+PyScan\Scripts\activate
 ```
 
 The terminal should now look something like this:
 ```
 (PyScan) D:\pyscan>
 ```
+Proceed to: [Running the PyScan3D Application](#Running-the-PyScan3D-Application).
 
 ### Linux or MacOS: 
 
@@ -66,21 +73,17 @@ The terminal should now look something like this:
 ```
 (PyScan) root@localhost:~/pyscan$
 ```
+Proceed to: [Running the PyScan3D Application](#Running-the-PyScan3D-Application).
 
 ### Deactivate the Virtual Environment
+If you no longer want to run the application, you will also need to deactivate the virtual environment.<br>
 To deactivate the virtual environment on Windows, simply type:
 ```
-PyScan\Scripts\deactivate.bat
+PyScan\Scripts\deactivate
 ```
 or on Linux/MacOS:
 ```
 deactivate
-```
-
-### Installing Dependencies
-Alternatively, all dependencies can be installed using this command in the root folder of the repository:
-```
-pip install -r requirements.txt
 ```
 
 ## Running the PyScan3D Application
@@ -92,3 +95,14 @@ python pyscan.py
 ## Troubleshooting
 
 
+### 1.) The system cannot find the path specified.
+Ensure you are in the root folder. This is the main folder that houses all the files. 
+If you cloned from GitHub, the root/main folder is called pyscan.
+
+### 2.) Missing Dependencies
+Install a dependency using this command:
+```
+pip install <dependency name>
+```
+
+Alternatively, all dependencies can be reinstalled: [Installing Dependencies](##Installation)

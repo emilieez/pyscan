@@ -9,9 +9,17 @@ import pandas as pd
 NOT IMPLEMENTED IN ModelClassifier 
 Currently inaccurate compared to current histogram classifier algorithm
 Machine Learning classifier requires more data to be accurate
+
+Run csv_file_editor write_to_file before running one of the training algorithms
 """
 
+
 def train_svc():
+    """
+    Uses the data in the object_data.csv file to train the classifier.
+    Uses the Support Vector Classifier machine learning algorithm.
+    :return:
+    """
     temp_list = []
     names = []
 
@@ -34,6 +42,11 @@ def train_svc():
 
 
 def train_neighbors():
+    """
+    Uses the data in the object_data.csv file to train the classifier.
+    Uses the Nearest Neighbors K-D Tree machine learning algorithm.
+    :return:
+    """
     temp_list = []
     names = []
 
@@ -56,6 +69,17 @@ def train_neighbors():
 
 
 def prediction():
+    """
+    This is a test function for to output machine learned results. This can be implemented into the main classifier
+    algorithm by using it to sort the data retrieved from the object_data.csv. This will only improve the speed
+    of the classifier; it will not necessarily make it more accurate.
+
+    For Example:
+    1.) Load object_data.csv into a List
+    2.) Make a prediction
+    3.) Use prediction output to sort predicted values first in the list
+    :return:
+    """
     mesh = ModelClassifier(os.path.join(os.path.join(os.path.dirname(__file__), "scans"), "Hand.obj"))
     hist_data = preprocessing.scale(mesh.generate_distribution_data(mesh.mesh_object.vertices))
 
