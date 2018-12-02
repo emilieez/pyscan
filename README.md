@@ -47,8 +47,14 @@ For our program, we used Python 3.6.
 ### Installing Dependencies
 A [virtual environment](#Run-the-PyScan-virtual-environment) is provided if the dependencies are not installed.
 However, all dependencies can be installed using this command in the root folder of the repository:
+#### Windows
 ```
 pip install -r requirements.txt
+```
+
+#### Linux/MacOS
+```
+pip3 install -r requirements.txt
 ```
 
 ## Run the PyScan virtual environment
@@ -105,8 +111,15 @@ If you cloned from GitHub, the root/main folder is called pyscan.
 
 ### 2.) Missing Dependencies
 Install a dependency using this command:
+
+#### Windows
 ```
 pip install <dependency name>
+```
+
+#### Linux/MacOS
+```
+pip3 install <dependency name>
 ```
 
 Alternatively, all dependencies can be reinstalled: [Installing Dependencies](#Installing-Dependencies)
