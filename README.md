@@ -6,7 +6,7 @@ Python is required to be able to run this program.
 ## Table of Contents
 1. [Features](#Features)
 2. [Known Application Bugs](#Known-Application-Bugs)
-3. [Installation](#Installation)
+3. [Installation](##Installation:)
 4. [Run the PyScan virtual environment](#Run-the-PyScan-virtual-environment)
 5. [Running the PyScan3D Application](#Running-the-PyScan3D-Application)
 6. [Troubleshooting](#Troubleshooting)
@@ -105,4 +105,4 @@ Install a dependency using this command:
 pip install <dependency name>
 ```
 
-Alternatively, all dependencies can be reinstalled: [Installing Dependencies](##Installation)
+Alternatively, all dependencies can be reinstalled: [Installing Dependencies](###Installing-Dependencies)
