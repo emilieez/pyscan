@@ -40,6 +40,10 @@ Clone the repository using SSH:
 git clone git@github.com:emilieez/pyscan.git
 ```
 
+### Install Python
+Refer to [this guide](https://realpython.com/installing-python/) to properly configure and install Python. \
+For our program, we used Python 3.6. 
+
 ### Installing Dependencies
 A [virtual environment](#Run-the-PyScan-virtual-environment) is provided if the dependencies are not installed.
 However, all dependencies can be installed using this command in the root folder of the repository:
