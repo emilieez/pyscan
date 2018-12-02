@@ -41,7 +41,7 @@ git clone git@github.com:emilieez/pyscan.git
 ```
 
 ### Install Python
-Refer to [this guide](https://realpython.com/installing-python/) to properly configure and install Python. \
+Refer to the [Python 3 Installation & Setup Guide](https://realpython.com/installing-python/) to properly configure and install Python. \
 For our program, we used Python 3.6. 
 
 ### Installing Dependencies
